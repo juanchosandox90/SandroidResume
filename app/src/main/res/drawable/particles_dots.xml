@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Some versions of Android Studio may show false warning,
+"Element drawable must be declared", but it works fine when
+compiling and running -->
+<drawable xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    class="com.doctoror.particlesdrawable.ParticlesDrawable"
+    app:numDots="120"
+    tools:ignore="NewApi" />
