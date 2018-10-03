@@ -1,4 +1,4 @@
-package jcsandoval.sandroidresume.com.sandroidresume;
+package jcsandoval.sandroidresume.com.sandroidresume.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
