@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SandroidAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/general_background</item>
+        <item name="android:windowBackground">@color/general_background</item>
+    </style>
 </resources>
