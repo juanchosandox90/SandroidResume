@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="jcsandoval.sandroidresume.com.sandroidresume">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_sandroid_launcher"
@@ -21,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.MainActivity" />
+        <activity android:name=".Activities.RegisterActivity" />
 
     </application>
 

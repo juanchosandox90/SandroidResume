@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
+import static jcsandoval.sandroidresume.com.sandroidresume.Utils.Constants.SPLASH_DELAY;
+
 public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
@@ -20,7 +22,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(i);
                 finish();
             }
-        }, 2500);
+        }, SPLASH_DELAY);
 
     }
 }
