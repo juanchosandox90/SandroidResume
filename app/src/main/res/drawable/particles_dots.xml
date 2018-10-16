@@ -4,5 +4,5 @@ compiling and running -->
 <drawable xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     class="com.doctoror.particlesdrawable.ParticlesDrawable"
-    app:numDots="120"
+    app:numDots="50"
     tools:ignore="NewApi" />

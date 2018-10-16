@@ -5,4 +5,13 @@
     <string name="register">Register</string>
     <string name="already_register_log_in">Already Register? Log in</string>
     <string name="logo_app">logo_app</string>
+    <string name="sign_up_label">Sign Up</string>
+    <string name="log_in_label">Log In</string>
+    <string name="login_button">Log In</string>
+    <string name="sigup_button">Sign Up</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="password_hint">Password</string>
+    <string name="email_hint">Email</string>
+    <string name="confirm_hint">Confirm Password</string>
+
 </resources>

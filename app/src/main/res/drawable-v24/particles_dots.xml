@@ -10,5 +10,5 @@ compiling and running -->
     app:lineThickness="1dp"
     app:maxDotRadius="3dp"
     app:minDotRadius="1dp"
-    app:numDots="120"
-    app:stepMultiplier="2" />
+    app:numDots="50"
+    app:stepMultiplier="1" />
