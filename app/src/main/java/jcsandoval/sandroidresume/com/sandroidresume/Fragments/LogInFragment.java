@@ -1,6 +1,7 @@
 package jcsandoval.sandroidresume.com.sandroidresume.Fragments;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -13,6 +14,9 @@ import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,23 +29,35 @@ import com.transitionseverywhere.TransitionManager;
 import com.transitionseverywhere.TransitionSet;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import jcsandoval.sandroidresume.com.sandroidresume.Activities.HomeActivity;
 import jcsandoval.sandroidresume.com.sandroidresume.Adapter.TextWatcherAdapter;
 import jcsandoval.sandroidresume.com.sandroidresume.R;
 import jcsandoval.sandroidresume.com.sandroidresume.Utils.Rotate;
 import jcsandoval.sandroidresume.com.sandroidresume.Utils.TextSizeTransition;
 
+import static jcsandoval.sandroidresume.com.sandroidresume.Utils.Constants.EMAIL_EXPRESSION;
+
 public class LogInFragment extends AuthFragment {
 
+    public Button login_button;
+    public ProgressBar progressBarLogin;
+    public LinearLayout progressBardLinearLogin;
     @BindViews(value = {R.id.email_input_edit, R.id.password_input_edit})
     protected List<TextInputEditText> views;
     private FirebaseAuth auth;
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        login_button = (Button) view.findViewById(R.id.login_button);
+        progressBarLogin = (ProgressBar) view.findViewById(R.id.progressBarLogin);
+        progressBardLinearLogin = (LinearLayout) view.findViewById(R.id.progressLayoutLogin);
         auth = FirebaseAuth.getInstance();
         caption.setText(getString(R.string.log_in_label));
         for (TextInputEditText editText : views) {
@@ -59,47 +75,79 @@ public class LogInFragment extends AuthFragment {
 
             editText.setOnFocusChangeListener((temp, hasFocus) -> {
                 if (!hasFocus) {
-                    boolean isEnabled = editText.getText().length() > 0;
+                    boolean isEnabled = Objects.requireNonNull(editText.getText()).length() > 0;
                     editText.setSelected(isEnabled);
                 }
             });
         }
-/*            caption.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
+        login_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validateEmail() && validatePassword()) {
+                    progressBardLinearLogin.setVisibility(View.VISIBLE);
+                    progressBarLogin.setVisibility(View.VISIBLE);
                     final TextInputEditText editTextEmail = ButterKnife.findById(view, R.id.email_input_edit);
                     final TextInputEditText editTextPass = ButterKnife.findById(view, R.id.password_input_edit);
-                    String email = editTextEmail.getText().toString().trim();
-                    String pass = editTextPass.getText().toString().trim();
+                    String email = Objects.requireNonNull(editTextEmail.getText()).toString().trim();
+                    String pass = Objects.requireNonNull(editTextPass.getText()).toString().trim();
                     auth.signInWithEmailAndPassword(email, pass)
-                            .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                            .addOnCompleteListener(Objects.requireNonNull(getActivity()), new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    Toast.makeText(getContext(), "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "loginWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
                                     if (!task.isSuccessful()) {
+                                        progressBarLogin.setVisibility(View.INVISIBLE);
+                                        progressBardLinearLogin.setVisibility(View.INVISIBLE);
                                         Toast.makeText(getContext(), "Authentication failed." + task.getException(),
                                                 Toast.LENGTH_SHORT).show();
                                     } else {
+                                        progressBarLogin.setVisibility(View.INVISIBLE);
+                                        progressBardLinearLogin.setVisibility(View.INVISIBLE);
+                                        Intent intent = new Intent(getActivity(), HomeActivity.class);
+                                        startActivity(intent);
                                         Toast.makeText(getContext(), "Authentication success." + task.getResult(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
-
                 }
-            });*/
+            }
+        });
     }
 
     public boolean validatePassword() {
         for (TextInputEditText editText : views) {
             if (editText.getId() == R.id.password_input_edit) {
                 if (editText.length() < 6) {
-                    Toast.makeText(getContext(), "Password must have at least, 6 characters", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Password must have at least, 6 characters!", Toast.LENGTH_LONG).show();
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    public boolean validateEmail() {
+        for (TextInputEditText editText : views)
+            if (editText.getId() == R.id.email_input_edit) {
+                if (!isEmailValid(Objects.requireNonNull(editText.getText()).toString())) {
+                    Toast.makeText(getContext(), "This email is not valid, please type a valid one!", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        return true;
+    }
+
+    public static boolean isEmailValid(String email) {
+        boolean isValid = false;
+
+        EMAIL_EXPRESSION = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+
+        Pattern pattern = Pattern.compile(EMAIL_EXPRESSION, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        return isValid;
     }
 
     @Override
