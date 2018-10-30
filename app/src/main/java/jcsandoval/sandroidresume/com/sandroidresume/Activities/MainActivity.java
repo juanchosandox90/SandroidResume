@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.ImageViewTarget;
 import com.doctoror.particlesdrawable.ParticlesDrawable;
 
@@ -49,11 +50,13 @@ public class MainActivity extends AppCompatActivity {
             @ColorRes int color = element.getId() != R.id.logo ? R.color.white_transparent : R.color.white_transparent;
             DrawableCompat.setTint(element.getDrawable(), ContextCompat.getColor(this, color));
         }
+        RequestOptions myOptions = new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .override(screenSize[0] * 2, screenSize[1]);
         Glide.with(this)
-                .load(R.drawable.high_res_bg_sandroid_alpha)
                 .asBitmap()
-                .override(screenSize[0] * 2, screenSize[1])
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .load(R.drawable.high_res_bg_sandroid_alpha)
+                .apply(myOptions)
                 .into(new ImageViewTarget<Bitmap>(background) {
                     @Override
                     protected void setResource(Bitmap resource) {
